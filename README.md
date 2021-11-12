@@ -94,11 +94,11 @@ To show whether there is a correlation between people’s attitudes towards Trum
 
 ## **Ideas that we have dropped** 🗑
 
-- **Idea 1 **: Build a regression model to predict people’s attitude towards Trump
+- **Idea 1**: Build a regression model to predict people’s attitude towards Trump
 
   **weakness**: The categorical feature of speakers may lead us to have too many independent variables in our regression model that we can not handle. 
 
-- **Idea 2 **:  Research question 1 is about finding out people with similar characteristics also have similar attitudes toward Trump. Can we do it the other way around, that is we find out those people who have similar attitudes, can we find some common features among them. 
+- **Idea 2**:  Research question 1 is about finding out people with similar characteristics also have similar attitudes toward Trump. Can we do it the other way around, that is we find out those people who have similar attitudes, can we find some common features among them. 
 
   **weakness**:  We think this is not very feasible because people’s characteristics in each group could still be greatly diverse. The pattern behind is likely to be obscure. 
 
