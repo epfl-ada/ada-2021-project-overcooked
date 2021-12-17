@@ -2,124 +2,120 @@
 
 ## Abstract 📖
 
-In recent years, Donald Trump is no doubt one of the most controversial public figures around the world. From winning the 2016 presidential election as a dark horse to losing the election by a narrow margin in late 2020, Trump has made a non-negligible impact on the United States and the world in the four years of his presidency. People’s attitude towards him greatly divides over different groups of people and varies as time moves forward. We want to see what people's attitudes toward Trump are in these four years, whether these attitudes have changed, and further what factors might be related to these changes. In other words, we will study people’s attitudes before and after some major events to find out how the attitudes change. And we will analyze those quotes about Trump and the US in the quotebank to find out the correlation between these two attitudes.
+In recent years, Donald Trump is no doubt one of the most
+controversial public figures around the world. From winning the 2016
+presidential election as a dark horse to losing the election by a
+narrow margin in late 2020, Trump has made a significant impact on
+the United States and the world during the four years of his presidency.
+
+We are going to discover what has changed for quotes on Trump and the reason behind these changes. At the beginning, we first discover the change of Trump's social circle by analysing who talked most about him at different times. Then we investigate the changes over people's words when they talked about Trump. After that, we go one step further to analyse the semantics of quotes rather than analysing on the level of words. Finally, we try to identify the potential factors that would have caused these changes.
 
 ## **Research Questions** ❓
 
-- **Question 1**. To explore the attitude towards Trump of each people cluster and check whether there is (a) specific cluster(s) that has/have an explicit attitude towards him and find out whether these clusters have some defining or distinguishing characteristic.
+- **Question 1**. Back in 2016, it was a big surprise that Trump was elected as the president despite his lack of political experience, which we believe should draw the attention of many, who would have never talked about Trump, to the newly elected president. Therefore, we would like to find out whether the people who talk about Trump have changed.
 
-- **Question 2**. To explore the changes of attitude towards Trump in each cluster as time went by. we could pick up some specific time such as,	
-  - before and after Trump won his presidency (December 2016 ) 
-  - the covid outbreak (March 2020)
+- **Question 2**. We are interested in what words people usually use to talk about Trump and also how these words and their frequency changes before and after the election.
 
-- **Question 3**. To explore whether there is any correlation between people’s attitudes toward Trump and America.
+- **Question 3**. Apart from changes in people's use of vocabulary, we would also want to get a higher level view of what people say, which leads us to analyse the semantics of people’s words based on one feature (i.e. region).
 
+- **Question 4**. Having a general view of semantics of people’s word, we would like to combine multiple features and do the clustering of speakers, and then analyse if there are different words contents among different clusters.
 
 
 ##  **Methods** 🔨
 
 ### 1. **Quotebank Data Cleaning**
 
-According to our topic, first we need to extract quotations related to Donald Trump and America and build databases respectively. To build the database, we filter out quotations whose speaker is “None”, keep the quotation containing the keywords related to Donald Trump or America, and only keep the quotation whose phase is ‘E’. After that, we get speakers’ identical information from wikidata through **‘qid’**.
+Since we mainly focus on words on Trump, we first need to extract the quotations mentioning Donald Trump and America. We filter out quotations whose speaker is “None”, keep the quotation containing the keywords related to Donald Trump or
+America and only keep the quotation whose phase is ‘E’. After that,
+we learn about speakers’ personal information from wikidata through
+**‘qid’**s.
 
 ### 2. **Sentiment Analysis**
 
-By applying **text2emotion**  package, we could get the emotion of each quote with probability, the result for each is like: {'Happy': 0.0, 'Angry': 0.0, 'Surprise': 0.5, 'Sad': 0.0, 'Fear': 0.5}. 
+By applying **vaderSentiment** package, we could get the negtive, positive or neural of each quote with probability, an example of the result for each is like:
 
-### 3. **Wikidata Cleaning and processing**
+```{neg: 0.0, pos: 0.0, neu: 0.5, compound: 0.0}```
 
-We aggregate all the categorical fields of a speaker into one array with the label of the fields prepended, which we then convert to an indicator vector whose columns represent one category. The categorical fields we consider are as follows:
+### 3. **Word Frequencies Counting**
+
+To get a basic idea of the vocabulary people use, we count the occurrences of words for each year after applying the usual text cleaning pipeline, i.e., tokenization and removal of stop words.
+
+### 4. **Word Embeddings Using BERT**
+
+We use BERT to get a vector representation of the semantics of the
+quotes so that we can analyse what different people are interested in
+under different situations (e.g., before and after certain events).
+
+### 5. **Wikidata Cleaning and processing**
+
+We aggregate all the categorical fields of a speaker into one array
+with the label of the fields prepended, which we then convert to an
+indicator vector whose columns represent one category. The categorical
+fields we consider are as follows:
 
  - nationality
- - gender 
- - ethnic group
- - occupation
+ - gender
  - party
  - academic degree
  - candidacy
  - religion
 
-We also calculate the ages of the speakers from their dates of birth. After that, we plot the distribution of the ages of the speakers and filter out people aged over 120, which we consider irrelevant to our analysis.
+We also calculate the ages of the speakers from their dates of
+birth. After that, we plot the distribution of the ages of the
+speakers and filter out people aged over 120, which we consider
+irrelevant to our analysis. We make use of the semantic links in the Wikidata database in order to get fewer categorical values with broader semantics.
 
-### 4. **Clustering or Simple Grouping**
+### 6. **Clustering and Feature Selection**
 
-By applying some clustering algorithms, our target speakers will be clustered with features in wiki data. In this part, we can also manually group people by some single feature such as their age, occupation, or their educational background.
+By clustering the samples using k-prototype, our target speakers will
+be placed into different groups according to their attributes from
+Wikidata. We also categorise people by analysing graphs built using
+the semantic data from Wikidata.
 
-### 5. **Analysis of attitude distributions in each cluster**
+### 7. **Analysis of how geographic location influence people’s words**  
 
-We will find the attitude distribution in each cluster to see whether people who share similar characteristics have similar attitudes towards Trump. We say people sharing similar characteristics means a group of people either generated by clustering algorithm or we manually group them by some simple feature. Then we try to find out if there are some groups that have some explicit attitude towards Trump. In other words, we will get the attitude distribution in each group, if there is an attitude dominant, then we try to find out what is the defining or distinguishing characteristic of this group. 
+We investigate people’s words by their geographic information learnt from Wikidata and study the different styles in which people from different parts of the world speak. We classify the quotes according to their sentiments (either positive or negative) and further uncover the difference by looking at the word frequencies.
 
-### 6. **Analysis of how time and events influence people’s attitudes**  
+### 8. **Visualizaiton with PCA**
+In order to have a clear view on our BERT vectors, we use PCA to reduce BERT vector from 1024 dimentions to 2-dimention for different situations and analyses.
 
-Now we focus on some clusters and try to find how their attitudes changed over time or around some major events. We plot the distribution of people's attitudes towards Trump in this cluster over time to get a general picture of how people’s attitudes changed overtime. This can be done with a slider plot where the slider controls time. Then we pick two specific time points (‘2016 election’ and ‘outbreak of Covid’) and get the distributions of people’s attitudes before and after these time points. We can use t-test or other methods to see whether the distributions are significantly different from each other which can help us find out if people’s attitudes correspond to specific events.
+## **Structure of the Codebase**
 
-### 7. **Correlation between people’s attitudes towards USA and Trump**
+milestone3.ipynb
+lib/feature_semantic.py
+lib/__init__.py
 
-To show whether there is a correlation between people’s attitudes towards Trump and America, the most initiative way could be to plot how people’s attitudes change towards Trump and America as time went by in one single picture. In order to find the relation between people’s attitudes toward Trump and America, we first need to compute the average probability for each emotion of a cluster towards Trump and America, then we could get Pearson correlation coefficients between emotion probabilities of Trump and the USA. We can also perform null hypothesis tests to explore more about their correlation. 
-
-## **Proposed timeline** 🗓
-
-| Date                         | Tasks                                                        |
-| :--------------------------- | ------------------------------------------------------------ |
-| By week 6                    | Brainstorm and decide final project ideas                    |
-| By week 8  (milestone 2 due) | Data clean and data extraction, finish initial analysis and finish sentiment analysis |
-| By week 10 (HW2 due)         | Clustering speakers by Wikidata features                     |
-| By week 11                   | Research question 1                                          |
-| By week 12                   | Research question 2 and 3                                    |
-| By week 13 (milestone 3 due) | Draw the final conclusions and write the data stories        |
-
-
+We place some helper functions under the module `lib`.
 
 ## **Organization within the team** 👨‍👩‍👧‍👦
 
 ### Milestone 2
 
-**Jinyi Xian**: initial data analysis, data wrangling, sentiment analysis
+**Jinyi Xian**: initial data analysis, data wrangling, sentiment
+analysis
 
-**Sijia Du**: initial data analysis, data wrangling, sentiment analysis
+**Sijia Du**: initial data analysis, data wrangling, sentiment
+analysis
 
-**Huan Yang**: initial data analysis, write readme file, come up with research questions and possible methods 
+**Huan Yang**: initial data analysis, write readme file, come up with
+research questions and possible methods
 
-**Siyi Wang**:  initial data analysis, write readme file, come up with and improve proposal
+**Siyi Wang**: initial data analysis, write readme file, come up with
+and improve proposal
 
 ### Milestone 3
 
-**Jinyi Xian**: Cluster analysis, visualization, research question1, research question 3, write data story.
+**Jinyi Xian**: Cluster analysis, visualization, research question1,
+research question 3, write data story.
 
-**Sijia Du**: Visualization, research question1, research question2, write data story.
+**Sijia Du**: Visualization, research question1, research question2,
+write data story.
 
-**Huan Yang**: Cluster analysis, visualization, research question2, research question 3, write data story.
+**Huan Yang**: Cluster analysis, visualization, research question2,
+research question 3, write data story.
 
-**Siyi Wang**: Visualization, research question1, research question 3, correlation analysis, write data story.
-
-## **Ideas that we have dropped** 🗑
-
-- **Idea 1**: Build a regression model to predict people’s attitude towards Trump
-
-  **weakness**: The categorical feature of speakers may lead us to have too many independent variables in our regression model that we can not handle. 
-
-- **Idea 2**:  Research question 1 is about finding out people with similar characteristics also have similar attitudes toward Trump. Can we do it the other way around, that is we find out those people who have similar attitudes, can we find some common features among them. 
-
-  **weakness**:  We think this is not very feasible because people’s characteristics in each group could still be greatly diverse. The pattern behind is likely to be obscure. 
-
-## **Questions for TAs** 👀
-
-1. How to deal with one speaker having more than 1 qid?
-2. For research question 3 the original one is “To explore whether there is any correlation between people’s attitudes toward Trump and America and discover whether there is any causal relationship between them.” But it seems difficult to find if it is actually a causal relation. How can we know if changes in people's attitudes towards Trump actually cause their opinion change towards America? Some major events can be those compounders where it both changes people’s attitude towards Trump and Us. How can we select people with a “coin”? Or how can we find some useful matching? 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Siyi Wang**: Visualization, research question1, research question 3,
+correlation analysis, write data story.
 
 
 
