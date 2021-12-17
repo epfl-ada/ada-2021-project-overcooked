@@ -79,6 +79,9 @@ We investigate people’s words by their geographic information learnt from Wiki
 ### 8. **Visualizaiton with PCA**
 In order to have a clear view on our BERT vectors, we use PCA to reduce BERT vector from 1024 dimentions to 2-dimention for different situations and analyses.
 
+## Outside DataSet
+We use Wiki Data to extract speaker's information. The link: https://www.wikidata.org/wiki/Wikidata:Main_Page
+
 ## **Structure of the Codebase**
 
 milestone3.ipynb
